@@ -19,6 +19,10 @@ sequelize.models = {};
 var User = sequelize.import(__dirname + "/models/user.js");
 sequelize.models.User = User;
 
-//sequelize.sync();
+var Repo = sequelize.import(__dirname + "/models/repo.js");
+sequelize.models.Repo = Repo;
+
+Repo.sync();
+// sequelize.getQueryInterface().addIndex()
 
 module.exports = sequelize;
