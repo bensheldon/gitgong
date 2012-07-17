@@ -2,3 +2,19 @@ div.navbar.navbar-fixed-top
   div.navbar-inner
     div.container
       div.brand Chicken<strong>Mole</strong> 
+      
+      div#login.pull-right      
+        -if(userSession)
+            div.btn-group.pull-right
+              a.btn(href='/users/' + userSession.username)
+                img.user-avatar(src=userSession.avatar, width="17px", height="17px")
+                = userSession.username
+              a.btn.dropdown-toggle(data-toggle="dropdown", href="#")
+                span.caret
+              ul.dropdown-menu
+                li
+                  a(href='/users/' + userSession.username) My Settings
+                li
+                  a(href="/logout") Logout
+        -else
+            a#login-btn.btn.btn-primary(href='/auth/github') Login with GitHub
