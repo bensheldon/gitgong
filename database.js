@@ -19,6 +19,6 @@ sequelize.models = {};
 var User = sequelize.import(__dirname + "/models/user.js");
 sequelize.models.User = User;
 
-sequelize.sync({force: true});
+//sequelize.sync();
 
 module.exports = sequelize;

@@ -40,15 +40,6 @@ app.configure(function(){
   app.use(express.static(__dirname + '/public'));
 });
 
-app.configure('development', function(){
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-});
-
-app.configure('production', function(){
-  app.use(express.errorHandler());
-  io.set('log level', 1); // reduce logging
-});
-
 // Always include the Session in the View
 app.dynamicHelpers({
   userSession: function(req, res){
@@ -63,6 +54,15 @@ app.dynamicHelpers({
       return null;
     }
   }
+});
+
+app.configure('development', function(){
+  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+});
+
+app.configure('production', function(){
+  app.use(express.errorHandler());
+  io.set('log level', 1); // reduce logging
 });
 
 passport.use(new GitHubStrategy({
@@ -131,9 +131,10 @@ app.get('/logout', function(req, res){
   res.redirect('/');
 });
 
-
 app.get('/', require('./routes/index'));
-app.get('/users/:user.:format', require('./routes/users'));
+app.get('/users/:user', require('./routes/users'));
+app.get('/repo/:account/:name/:action', require('./routes/repo'));
+
 
 app.listen(PORT, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);
