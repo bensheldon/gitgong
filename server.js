@@ -1,6 +1,15 @@
-var express         = require('express')
-  , app             = module.exports = express.createServer();
+var url             = require('url')
+  , express         = require('express')
+  , app             = module.exports = express.createServer()
+  , RedisStore = require('connect-redis')(express);
   
+var redisUrl = url.parse(process.env.REDISTOGO_URL),
+    redisAuth = redisUrl.auth.split(':');  
+app.set('redisHost', redisUrl.hostname);
+app.set('redisPort', redisUrl.port);
+app.set('redisDb', redisAuth[0]);
+app.set('redisPass', redisAuth[1]);
+
 var PORT = process.env.PORT || 3000;
 
 var passport        = require('passport')
@@ -15,7 +24,15 @@ app.configure(function(){
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
   app.use(express.cookieParser());  
-  app.use(express.session({ secret: 'keyboard cat' }));
+  app.use(express.session({ 
+    secret: 'keyboard cat' 
+  , store: new RedisStore({
+        host: app.set('redisHost'),
+        port: app.set('redisPort'),
+        db: app.set('redisDb'),
+        pass: app.set('redisPass')
+    })
+  }));
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(express.methodOverride());
@@ -54,8 +71,9 @@ passport.use(new GitHubStrategy({
     callbackURL: process.env.HOST + "/auth/github/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-    console.log(profile);
     User.find({ where: {provider_id: profile.id, provider: 'github'} }).success(function(user) {
+      console.log(user);
+
       if (!user) {
         user = User.build({
           username      : profile.username
@@ -96,7 +114,7 @@ passport.deserializeUser(function(obj, done) {
 // Redirect the user to GitHub for authentication.  When complete, GitHub
 // will redirect the user back to the application at
 // /auth/github/callback
-app.get('/auth/github', passport.authenticate('github'));
+app.get('/auth/github', passport.authenticate('github', { scope: 'repo' }));
 
 // GitHub will redirect the user to this URL after approval.  Finish the
 // authentication process by attempting to obtain an access token.  If
@@ -115,7 +133,7 @@ app.get('/logout', function(req, res){
 
 
 app.get('/', require('./routes/index'));
-app.get('/render.:format', require('./routes/render'));
+app.get('/users/:user.:format', require('./routes/users'));
 
 app.listen(PORT, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

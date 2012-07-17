@@ -7,6 +7,7 @@
   }
   , "dependencies": {
       "express": "2.5.x"
+    , "connect-redis": "1.4.0"
     , "jade": ">= 0.0.x"
     , "pg": ">=0.7.2"
     , "sequelize": ">= 1.5.x"
