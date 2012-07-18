@@ -1,4 +1,9 @@
-
+#login img.user-avatar {
+  vertical-align:text-top;
+  margin-right: 6px;
+  background: #fff;
+  border-radius: 2px;
+}
 
 @media (min-width: 979px) {
   body {
