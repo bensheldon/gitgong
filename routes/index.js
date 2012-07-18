@@ -5,10 +5,10 @@ module.exports = function(req, res) {
 
   Update.findAll({
     order: 'created_at DESC'
-  , limite: 10  
+  , limit: 10  
   }).success(function(updates){
     res.render('index', { 
-      title: "ChickenMole"
+      title: "GitGong"
     , updates: updates
     });
 

@@ -33,7 +33,7 @@ module.exports = function(req, res) {
       }
       , function(err) {
         res.render('user', { 
-          title: "ChickenMole"
+          title: "GitGong"
         , usersRepos: usersRepos
         });
       });
