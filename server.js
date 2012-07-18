@@ -4,6 +4,7 @@ var url             = require('url')
   , RedisStore = require('connect-redis')(express)
   , io              = require('socket.io').listen(app);
 
+var moment = require('moment');
   
 var redisUrl = url.parse(process.env.REDISTOGO_URL),
     redisAuth = redisUrl.auth.split(':');  
@@ -55,6 +56,9 @@ app.dynamicHelpers({
     else {
       return null;
     }
+  },
+  moment: function(req, res) {
+    return moment; 
   }
 });
 

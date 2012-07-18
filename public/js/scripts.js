@@ -5,6 +5,28 @@ $(document).ready(function() {
 
   // Tablesorter
   $("#endpoints").tablesorter({});
+
+  // TimeAgo - https://github.com/rmm5t/jquery-timeago/blob/master/locales/jquery.timeago.en.js
+  jQuery.timeago.settings.strings = {
+    prefixAgo: null,
+    prefixFromNow: null,
+    suffixAgo: "",
+    suffixFromNow: "from now",
+    seconds: "just now",
+    minute: "1 minute ago",
+    minutes: "%d minutes ago",
+    hour: "1 hour ago",
+    hours: "%d hours ago",
+    day: "1 day ago",
+    days: "%d days ago",
+    month: "1 month ago",
+    months: "%d months ago",
+    year: "a year ago",
+    years: "%d years ago",
+    wordSeparator: " ",
+    numbers: []
+  };
+  $("time.timeago").timeago();
 });
 
 // SETUP
@@ -46,7 +68,9 @@ $(document).ready(function() {
   });
 
   socket.on('newpush', function (push) {
-    var row  = '<div class="row fluid"><div class="span12 well">'
+    var row  = '<div class="row-fluid"><div class="span12 well">'
+             + '<time class="timeago" datetime="' + moment(push['created_at']).format() + '">just now</time>'
+             + ', '
              + '<strong><a href="http://github.com/users/'+push.user+'">' + push.user + "</a></strong>"
              + " pushed "
              + "<strong>" + push.commitCount + "</strong>"
@@ -54,12 +78,12 @@ $(document).ready(function() {
              + "<strong>" + push.repo + "</strong>"
              + "</div></div>"
 
-    $("div#updates").prepend(row);
+    $("div#updates").prepend(row).timeago();
     $('div#audio').append('<audio src="/assets/gong.mp3" autoplay controls style="display:none"></audio>');
     $('audio').on('ended', function(event) {
       $(this).remove();
     });
-    console.log(push);
+    
   });
 
 });
