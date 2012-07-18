@@ -5,6 +5,10 @@
   border-radius: 2px;
 }
 
+#login .btn-group {
+  width: 160px;
+}
+
 @media (min-width: 979px) {
   body {
     padding-top: 60px;
