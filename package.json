@@ -16,6 +16,7 @@
     , "passport-github": ">=0.1.3"
     , "request": ">= 2.9.100"
     , "async": ">=0.1.22"
+    , "moment":">=1.6.2"
   }
   , "devDependencies": {
       "mocha": ">=1.0.3"
