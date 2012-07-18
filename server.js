@@ -131,7 +131,7 @@ app.get('/auth/github', passport.authenticate('github', { scope: 'repo' }));
 app.get('/auth/github/callback', 
   passport.authenticate('github', { failureRedirect: '/login' }),
   function(req, res) {
-    res.redirect('/');
+    res.redirect('/users/'+req.user.username);
   });
 
 app.get('/logout', function(req, res){
