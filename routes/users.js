@@ -1,6 +1,9 @@
 var request = require('request')
     async   = require('async');
 
+var db   = require('../database.js')
+    Repo = db.models.Repo;
+
 module.exports = function(req, res) {
   var userSession = req.session.passport.user;
 
@@ -18,9 +21,23 @@ module.exports = function(req, res) {
         }
       }
 
-      res.render('user', { 
-        title: "ChickenMole"
-      , usersRepos: usersRepos
+      async.forEach(usersRepos, function(repo, done) {
+        Repo.find({ where: {github_id: repo.id} }).success(function(subscription) {
+          if (subscription) {
+            console.log(subscription);
+            repo.subscribedTo = true;
+          }
+          else {
+            repo.subscribedTo = false;
+          }
+          done();
+        });
+      }
+      , function(err) {
+        res.render('user', { 
+          title: "ChickenMole"
+        , usersRepos: usersRepos
+        });
       });
     });
   }

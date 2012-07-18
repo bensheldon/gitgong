@@ -1,7 +1,9 @@
 var url             = require('url')
   , express         = require('express')
   , app             = module.exports = express.createServer()
-  , RedisStore = require('connect-redis')(express);
+  , RedisStore = require('connect-redis')(express)
+  , io              = require('socket.io').listen(app);
+
   
 var redisUrl = url.parse(process.env.REDISTOGO_URL),
     redisAuth = redisUrl.auth.split(':');  
@@ -63,6 +65,12 @@ app.configure('development', function(){
 app.configure('production', function(){
   app.use(express.errorHandler());
   io.set('log level', 1); // reduce logging
+});
+
+// assuming io is the Socket.IO server object
+io.configure(function () { 
+  io.set("transports", ["xhr-polling"]); 
+  io.set("polling duration", 10); 
 });
 
 passport.use(new GitHubStrategy({
@@ -133,8 +141,12 @@ app.get('/logout', function(req, res){
 
 app.get('/', require('./routes/index'));
 app.get('/users/:user', require('./routes/users'));
-app.get('/repo/:account/:name/:action', require('./routes/repo'));
+app.post('/repo/:account/:name/:action', require('./routes/repo'));
+app.post('/posthook', function (req, res, next) { req.io = io; next(); }, require('./routes/posthook'));
 
+io.sockets.on('connection', function (socket) {
+  socket.emit('info', { hello: 'world' });
+});
 
 app.listen(PORT, function(){
   console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env);

@@ -4,8 +4,8 @@ div.row-fluid
 
 - each repo in usersRepos
   div.row-fluid  
-    div.span12
-      input(type="checkbox", class="subscribe", name='repo['+repo['full_name']+']')
+    div#repos.span12
+      input(type="checkbox", class="subscribe", name=repo['full_name'], value=repo.subscribedTo)
       |  
       strong= repo.name
       |  

@@ -28,13 +28,14 @@ module.exports = function (req, res) {
             var repoUrl = "https://api.github.com/repos/"+req.params.account+"/"+req.params.name+"?access_token="+userSession.token+"&sort=pushed";
             request(repoUrl, function (err, repoRes, repoBody) {
               repoBody = JSON.parse(repoBody);
+              console.log(repoBody);
               Repo.create({
-                github_id    : repoBody.parent.id
+                github_id    : repoBody.id
               , account      : req.params.account
               , name         : req.params.name
-              , description  : repoBody.parent.description
-              , private      : repoBody.parent.private
-              , url          : repoBody.parent.url
+              , description  : repoBody.description
+              , private      : repoBody.private
+              , url          : repoBody.url
               }).error(function(err) { 
                 //console.log(err) // Duplicate key error
               });
