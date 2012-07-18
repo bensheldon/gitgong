@@ -3,4 +3,13 @@ div.row-fluid
     p Alert the room to your Github commits.
 
 div#updates
+  -each update in updates
+    div.row-fluid
+      div.span12.well
+        strong
+          a(href='http://github.com/users/'+ update.username)= update.username
+        |  pushed 
+        strong= update.commit_count
+        |  commits to 
+        strong= update.name
 

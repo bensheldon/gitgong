@@ -62,21 +62,4 @@ $(document).ready(function() {
     console.log(push);
   });
 
-  socket.on('serviceRequest', function (serviceRequest) {
-    var row  = "<tr>"
-               + "<td>" + serviceRequest.endpoint + "</td>"
-               + "<td>" + serviceRequest.service_name + "</td>"
-               + "<td>" + serviceRequest.description + "</td>";
-    if (serviceRequest.media_url) {
-        console.log( serviceRequest.media_url);
-        row +=  '<td><img src="' + serviceRequest.media_url + '" /></td>';
-    }
-    else {
-        row += '<td></td>';
-    }
-    row += "<td>" + serviceRequest.requested_datetime + "</td>";
-    row += '</tr>';
-
-
-  });
 });

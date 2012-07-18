@@ -22,6 +22,9 @@ sequelize.models.User = User;
 var Repo = sequelize.import(__dirname + "/models/repo.js");
 sequelize.models.Repo = Repo;
 
+var Update = sequelize.import(__dirname + "/models/update.js");
+sequelize.models.Update = Update;
+
 sequelize.sync();
 // sequelize.getQueryInterface().addIndex()
 

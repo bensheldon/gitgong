@@ -1,13 +1,11 @@
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define("update", {
-    github_id    : { type: DataTypes.INTEGER, unique: true }
-  , account      : DataTypes.STRING
-  , name         : DataTypes.STRING
-  , description  : DataTypes.TEXT
-  , private      : { type: DataTypes.BOOLEAN, defaultValue: false }
+    name         : DataTypes.STRING
+  , username     : DataTypes.STRING
   , url          : DataTypes.STRING
+  , commit_count : DataTypes.INTEGER
+  , private      : { type: DataTypes.BOOLEAN, defaultValue: false }
   }, {
     underscored     : true
-  , freezeTableName : true
   })
 }
