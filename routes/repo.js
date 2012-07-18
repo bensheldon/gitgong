@@ -28,7 +28,6 @@ module.exports = function (req, res) {
             var repoUrl = "https://api.github.com/repos/"+req.params.account+"/"+req.params.name+"?access_token="+userSession.token+"&sort=pushed";
             request(repoUrl, function (err, repoRes, repoBody) {
               repoBody = JSON.parse(repoBody);
-              console.log(repoBody);
               Repo.create({
                 github_id    : repoBody.id
               , account      : req.params.account

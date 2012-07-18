@@ -9,7 +9,6 @@ module.exports = function(req, res) {
 
   if (userSession.username === req.params.user) {
     var usersRepos = [];
-    console.log(userSession.token);
     // show current user's repos
     var usersReposUrl = "https://api.github.com/user/repos?access_token="+userSession.token+"&sort=pushed";
     // get a list of the user's repos
@@ -24,7 +23,6 @@ module.exports = function(req, res) {
       async.forEach(usersRepos, function(repo, done) {
         Repo.find({ where: {github_id: repo.id} }).success(function(subscription) {
           if (subscription) {
-            console.log(subscription);
             repo.subscribedTo = true;
           }
           else {
