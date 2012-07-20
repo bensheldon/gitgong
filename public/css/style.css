@@ -5,8 +5,20 @@
   border-radius: 2px;
 }
 
-#login .btn-group {
+
+/**
+ * Fix line-breaking account button
+ */
+/*#login .btn-group {
   width: 160px;
+}*/
+#login .btn-group {
+  display: inline-block;
+  font-size: 0;
+}
+#login .btn-group > .btn,
+#login .btn-group > .dropdown-menu {
+  font-size: 13px; // redeclare as part 2 of font-size inline-block hack
 }
 
 @media (min-width: 979px) {
