@@ -25,7 +25,10 @@ sequelize.models.Repo = Repo;
 var Update = sequelize.import(__dirname + "/models/update.js");
 sequelize.models.Update = Update;
 
+// required to deal with this issue:
+// https://github.com/sdepold/sequelize/issues/177
 sequelize.sync();
+
 // sequelize.getQueryInterface().addIndex()
 
 module.exports = sequelize;

@@ -68,17 +68,25 @@ $(document).ready(function() {
   });
 
   socket.on('newpush', function (push) {
-    var row  = '<div class="row-fluid"><div class="span12 well">'
-             + '<time class="timeago" datetime="' + moment(push['created_at']).format() + '">just now</time>'
-             + ', '
+    console.log(push);
+    var update  = '<li>'
              + '<strong><a href="http://github.com/users/'+push.user+'">' + push.user + "</a></strong>"
              + " pushed "
              + "<strong>" + push.commitCount + "</strong>"
-             + " commits to "
-             + "<strong>" + push.repo + "</strong>"
-             + "</div></div>"
+             + " commits to ";
+  if (!push.private) {
 
-    $("div#updates").prepend(row).timeago();
+  }
+  else {
+    update += '<strong>' + push.repo + '</strong> <i class="icon-lock">'
+  }
+             
+    update += '<span class="label label-info pull-right"><time class="timeago" datetime="' + moment(push['created_at']).format() + '">just now</time></span>'
+            + "</li>";
+
+    console.log(update);
+
+    $("ul#updates-list").prepend(update).timeago();
     $('div#audio').append('<audio src="/assets/gong.mp3" autoplay controls style="display:none"></audio>');
     $('audio').on('ended', function(event) {
       $(this).remove();

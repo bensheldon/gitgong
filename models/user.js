@@ -9,5 +9,8 @@ module.exports = function(sequelize, DataTypes) {
   , display_name  : DataTypes.STRING
   , avatar        : DataTypes.STRING
   , url           : DataTypes.STRING
-  })
+  }, {
+    underscored     : true
+  , omitNull        : true
+  });
 }

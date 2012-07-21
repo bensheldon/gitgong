@@ -36,7 +36,7 @@ module.exports = function (req, res) {
               , private      : repoBody.private
               , url          : repoBody.url
               }).error(function(err) { 
-                //console.log(err) // Duplicate key error
+                console.log(err) // Duplicate key error
               });
             })
           }

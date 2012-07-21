@@ -16,6 +16,7 @@ module.exports = function(req, res) {
     user: push.pusher.name
   , repo: push.repository.name
   , commitCount: push.commits.length
+  , private: push.repository.private
   });
   res.send('okey-dokey');
 }

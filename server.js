@@ -8,10 +8,6 @@ var moment = require('moment');
   
 var redisUrl = url.parse(process.env.REDISTOGO_URL),
     redisAuth = redisUrl.auth.split(':');  
-app.set('redisHost', redisUrl.hostname);
-app.set('redisPort', redisUrl.port);
-app.set('redisDb', redisAuth[0]);
-app.set('redisPass', redisAuth[1]);
 
 var PORT = process.env.PORT || 3000;
 
@@ -27,6 +23,12 @@ app.configure(function(){
   app.set('view engine', 'jade');
   app.use(express.bodyParser());
   app.use(express.cookieParser());  
+
+  // Use Redis for Sessions
+  app.set('redisHost', redisUrl.hostname);
+  app.set('redisPort', redisUrl.port);
+  app.set('redisDb', redisAuth[0]);
+  app.set('redisPass', redisAuth[1]);
   app.use(express.session({ 
     secret: 'keyboard cat' 
   , store: new RedisStore({
@@ -36,6 +38,7 @@ app.configure(function(){
         pass: app.set('redisPass')
     })
   }));
+
   app.use(passport.initialize());
   app.use(passport.session());
   app.use(express.methodOverride());
@@ -64,6 +67,7 @@ app.dynamicHelpers({
 
 app.configure('development', function(){
   app.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  io.set('log level', 1); // reduce logging
 });
 
 app.configure('production', function(){
@@ -97,6 +101,14 @@ passport.use(new GitHubStrategy({
         , avatar        : profile._json.avatar_url
         , url           : profile.profileUrl
         });
+      }
+      else {
+        // update the existing user's info
+        user.token         = accessToken;
+        user.tokensecret   = refreshToken;
+        user.display_name  = profile.displayName;
+        user.avatar        = profile._json.avatar_url;
+        user.url           = profile.profileUrl;
       }
       user.save().success(function(user){
         done(null, user);

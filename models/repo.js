@@ -9,5 +9,6 @@ module.exports = function(sequelize, DataTypes) {
   }, {
     underscored     : true
   , freezeTableName : true
+  , omitNull        : true
   })
 }

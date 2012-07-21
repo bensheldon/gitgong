@@ -5,7 +5,7 @@ div.navbar.navbar-fixed-top
       
       div#login.pull-right      
         -if(userSession)
-            div.btn-group.pull-right
+            div.btn-group
               a.btn(href='/users/' + userSession.username)
                 img.user-avatar(src=userSession.avatar, width="17px", height="17px")
                 = userSession.username
@@ -13,7 +13,7 @@ div.navbar.navbar-fixed-top
                 span.caret
               ul.dropdown-menu
                 li
-                  a(href='/users/' + userSession.username) My Settings
+                  a(href='/users/' + userSession.username) My Repositories
                 li
                   a(href="/logout") Logout
         -else

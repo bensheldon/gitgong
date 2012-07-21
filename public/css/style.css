@@ -21,6 +21,11 @@
   font-size: 13px; // redeclare as part 2 of font-size inline-block hack
 }
 
+.tooltip {
+  font-size: 13px;
+  font-weight: bold;
+}
+
 @media (min-width: 979px) {
   body {
     padding-top: 60px;

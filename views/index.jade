@@ -2,16 +2,49 @@ div.row-fluid
   div#info.span12.well 
     p Alert the room to your Github commits.
 
-div#updates
-  -each update in updates
-    div.row-fluid
-      div.span12.well
-        time.timeago(datetime=moment(update['created_at']).format())= moment(update['created_at']).format('MMMM D, YYYY')
-        | , 
-        strong
-          a(href='http://github.com/users/'+ update.username)= update.username
-        |  pushed 
-        strong= update.commit_count
-        |  commits to 
-        strong= update.name
+div.row-fluid
 
+  div#updates.span8.well
+    div.page-header
+      h1 Updates
+    ul#updates-list
+      -each update in updates
+        li
+          strong
+            a(href='http://github.com/users/'+ update.username)= update.username
+          |  pushed 
+          strong= update.commit_count
+          |  commits to 
+          strong
+            if (!update.private)
+              a(href=update.url)= update.name
+            else
+              = update.name
+              i.icon-lock
+          |  
+          span.label.label-info.pull-right
+            time.timeago(datetime=moment(update['created_at']).format())= moment(update['created_at']).format('MMMM D, YYYY')
+
+  aside.span4
+    div#projects.well
+      div.page-header
+        h1 Projects
+      ul
+        -each repo in repos
+          li
+            strong
+              if (!repo.private)
+                a(href=repo.url)= repo.name
+              else
+                = repo.name
+                i.icon-lock
+            if (repo.description)
+              | : #{repo.description}
+    
+    div#users.well
+      div.page-header
+        h1 Contributors
+      div.row-fluid
+        -each user in users
+          a(href=user.url, rel="tooltip", title=user.username).span3
+            img(src=user.avatar)

@@ -7,5 +7,7 @@ module.exports = function(sequelize, DataTypes) {
   , private      : { type: DataTypes.BOOLEAN, defaultValue: false }
   }, {
     underscored     : true
+  , omitNull        : true
+
   })
 }
